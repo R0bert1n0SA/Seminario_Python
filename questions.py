@@ -1,4 +1,18 @@
 import random
+import sys
+
+#Solucion del bug validacion
+def Validar():
+    user_answer = input("Respuesta: ").strip() 
+    if user_answer.isdigit():
+        num=int(user_answer)
+        if num in {1, 2, 3, 4}:
+            return num - 1
+    print("Respuesta no válida")
+    sys.exit(1) 
+
+
+
 # Preguntas para el juego
 questions = [
     "¿Qué función se usa para obtener la longitud de una cadena en Python?",
@@ -6,6 +20,8 @@ questions = [
     "¿Cómo se solicita entrada del usuario en Python?",
     "¿Cuál de las siguientes expresiones es un comentario válido en Python?",
     "¿Cuál es el operador de comparación para verificar si dos valores son iguales?",]
+
+
 # Respuestas posibles para cada pregunta, en el mismo orden que las preguntas
 answers = [
     ("size()", "len()", "length()", "count()"),
@@ -19,7 +35,9 @@ answers = [
     ),
     ("=", "==", "!=", "==="),
     ]
-# Índice de la respuesta correcta para cada pregunta, el el mismo orden que las preguntas
+
+
+# Índice de la respuesta correcta para cada pregunta, el  mismo orden que las preguntas
 correct_answers_index = [1, 2, 0, 3, 1]
 # El usuario deberá contestar 3 preguntas
 for _ in range(3):
@@ -31,9 +49,9 @@ for _ in range(3):
         print(f"{i + 1}. {answer}")
     # El usuario tiene 2 intentos para responder correctamente
     for intento in range(2):
-        user_answer = int(input("Respuesta: ")) - 1
+        entrada=Validar()
     # Se verifica si la respuesta es correcta
-        if user_answer == correct_answers_index[question_index]:
+        if entrada == correct_answers_index[question_index]:
             print("¡Correcto!")
             break
     else:
