@@ -12,7 +12,6 @@ def Validar():
     sys.exit(1) 
 
 
-
 # Preguntas para el juego
 questions = [
     "¿Qué función se usa para obtener la longitud de una cadena en Python?",
@@ -36,7 +35,7 @@ answers = [
     ("=", "==", "!=", "==="),
     ]
 
-
+score=0.0
 # Índice de la respuesta correcta para cada pregunta, el  mismo orden que las preguntas
 correct_answers_index = [1, 2, 0, 3, 1]
 # El usuario deberá contestar 3 preguntas
@@ -50,10 +49,14 @@ for _ in range(3):
     # El usuario tiene 2 intentos para responder correctamente
     for intento in range(2):
         entrada=Validar()
+        print(entrada)
     # Se verifica si la respuesta es correcta
         if entrada == correct_answers_index[question_index]:
             print("¡Correcto!")
+            score += 1
             break
+        else:
+            score-=0.5
     else:
     # Si el usuario no responde correctamente después de 2 intentos,
     # se muestra la respuesta correcta
@@ -61,3 +64,4 @@ for _ in range(3):
         print(answers[question_index] [correct_answers_index[question_index]])
     # Se imprime un blanco al final de la pregunta
     print()
+print("Su puntaje es: "+str(score))
