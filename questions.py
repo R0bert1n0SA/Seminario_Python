@@ -25,11 +25,11 @@ preguntas=[("¿Qué función se usa para obtener la longitud de una cadena en Py
             ("=", "==", "!=", "==="), 1),]
 
 score=0.0
+preguntas_seleccionadas=random.sample(preguntas,3)
 # El usuario deberá contestar 3 preguntas
-for _ in range(3):
-    # Se selecciona una pregunta aleatoria
-    pregunta ,opciones,respuesta=random.choice(preguntas)
-    # Se muestra la pregunta y las respuestas posibles
+pregunta ,opciones,respuesta=random.choice(preguntas_seleccionadas)
+# Se muestra la pregunta y las respuestas posibles
+for pregunta, opciones, respuesta in preguntas_seleccionadas:    
     print(pregunta)
     for i, answer in enumerate(opciones):
         print(f"{i + 1}. {answer}")
