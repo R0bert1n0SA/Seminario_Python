@@ -13,45 +13,31 @@ def Validar():
 
 
 # Preguntas para el juego
-questions = [
-    "¿Qué función se usa para obtener la longitud de una cadena en Python?",
-    "¿Cuál de las siguientes opciones es un número entero en Python?",
-    "¿Cómo se solicita entrada del usuario en Python?",
-    "¿Cuál de las siguientes expresiones es un comentario válido en Python?",
-    "¿Cuál es el operador de comparación para verificar si dos valores son iguales?",]
-
-
-# Respuestas posibles para cada pregunta, en el mismo orden que las preguntas
-answers = [
-    ("size()", "len()", "length()", "count()"),
-    ("3.14", "'42'", "10", "True"),
-    ("input()", "scan()", "read()", "ask()"),
-    (
-        "// Esto es un comentario",
-        "/* Esto es un comentario */",
-        "-- Esto es un comentario",
-        "# Esto es un comentario",
-    ),
-    ("=", "==", "!=", "==="),
-    ]
+preguntas=[("¿Qué función se usa para obtener la longitud de una cadena en Python?", 
+            ("size()", "len()", "length()", "count()"), 1),
+            ("¿Cuál de las siguientes opciones es un número entero en Python?", 
+            ("3.14", "'42'", "10", "True"), 2),
+            ("¿Cómo se solicita entrada del usuario en Python?", 
+            ("input()", "scan()", "read()", "ask()"), 0),
+            ("¿Cuál de las siguientes expresiones es un comentario válido en Python?", 
+            ("// Esto es un comentario", "/* Esto es un comentario */", "-- Esto es un comentario", "# Esto es un comentario",), 3),
+            ("¿Cuál es el operador de comparación para verificar si dos valores son iguales?", 
+            ("=", "==", "!=", "==="), 1),]
 
 score=0.0
-# Índice de la respuesta correcta para cada pregunta, el  mismo orden que las preguntas
-correct_answers_index = [1, 2, 0, 3, 1]
 # El usuario deberá contestar 3 preguntas
 for _ in range(3):
     # Se selecciona una pregunta aleatoria
-    question_index = random.randint(0, len(questions) - 1)
+    pregunta ,opciones,respuesta=random.choice(preguntas)
     # Se muestra la pregunta y las respuestas posibles
-    print(questions[question_index])
-    for i, answer in enumerate(answers[question_index]):
+    print(pregunta)
+    for i, answer in enumerate(opciones):
         print(f"{i + 1}. {answer}")
     # El usuario tiene 2 intentos para responder correctamente
     for intento in range(2):
         entrada=Validar()
-        print(entrada)
     # Se verifica si la respuesta es correcta
-        if entrada == correct_answers_index[question_index]:
+        if entrada == respuesta:
             print("¡Correcto!")
             score += 1
             break
@@ -61,7 +47,7 @@ for _ in range(3):
     # Si el usuario no responde correctamente después de 2 intentos,
     # se muestra la respuesta correcta
         print("Incorrecto. La respuesta correcta es:")
-        print(answers[question_index] [correct_answers_index[question_index]])
+        print(opciones[respuesta])
     # Se imprime un blanco al final de la pregunta
     print()
 print("Su puntaje es: "+str(score))
