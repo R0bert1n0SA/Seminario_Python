@@ -16,14 +16,15 @@ def agregar_producto(inventario):
     if nombre in inventario:
         print("El producto ya existe en el inventario.")
     else:
-        try:
-            cantidad = int(input("Ingrese la cantidad inicial: "))
+        cantidad = input("Ingrese la cantidad inicial: ")
+        if cantidad.isdigit():
+            cantidad=int(cantidad)
             if cantidad < 0:
                 print("La cantidad no puede ser negativa.")
             else:
                 inventario[nombre] = cantidad
                 print("Producto agregado.")
-        except ValueError:
+        else:
             print("Error: La cantidad debe ser un número entero.")
 
 def eliminar_producto(inventario):
@@ -42,7 +43,7 @@ def mostrar_inventario(inventario):
         for producto, cantidad in inventario.items():
             print(f"-{producto}: {cantidad} unidades")
 
-def main():
+def principal():
     inventario = {}
     while True:
         mostrar_menu()
@@ -63,4 +64,4 @@ def main():
         limpiar_pantalla()
 
 
-main()
+principal()
