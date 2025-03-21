@@ -2,18 +2,56 @@ import random
 import sys
 
 #Solucion del bug validacion
-def Validar():
+def validar():
+    """ Valida la entrada del usuario y la convierte en un número entre 0 y 3 """
     user_answer = input("Respuesta: ").strip() 
-    if user_answer.isdigit():
-        num=int(user_answer)
-        if num in {1, 2, 3, 4}:
-            return num - 1
+    if user_answer in {"1", "2", "3", "4"}:
+        return int(user_answer) - 1
     print("Respuesta no válida")
     sys.exit(1) 
 
 
-# Preguntas para el juego
-preguntas=[("¿Qué función se usa para obtener la longitud de una cadena en Python?", 
+def evaluar(entrada,respuesta):
+    """ Evalúa la respuesta del usuario y devuelve la puntuación obtenida """
+    if entrada == respuesta:
+        print("¡Correcto!")
+        return 1
+    else:
+        return -0.5
+
+
+def mostrar_pregunta (pregunta,opciones,respuesta,score):
+    """ Muestra una pregunta al usuario y maneja la respuesta """
+    print("\n" + pregunta)
+    
+    for i, opcion in enumerate(opciones):
+        print(f"{i + 1}. {opcion}")  # Muestra las opciones numeradas
+    # El usuario tiene 2 intentos para responder correctamente
+    for intento in range(2):
+        entrada = validar()
+        # Se verifica si la respuesta es correcta
+        valor=evaluar(entrada,respuesta)
+        if valor == 1:
+            score += valor
+            break
+    else:
+        print("Incorrecto. La respuesta correcta es:")            
+        print(opciones[respuesta])
+
+
+def bucle(preguntas_seleccionadas,score):
+    """ Itera sobre las preguntas  """
+    # Se muestra la pregunta y las respuestas posibles
+    for pregunta, opciones, respuesta in preguntas_seleccionadas:  
+        mostrar_pregunta(pregunta,opciones,respuesta,score)
+        if score < 0 :
+            score=0
+    return score
+
+
+def principal():
+    """ Ejecuta el juego de preguntas """
+    preguntas=[("¿Qué función se usa para obtener la longitud de una cadena en Python?", 
             ("size()", "len()", "length()", "count()"), 1),
             ("¿Cuál de las siguientes opciones es un número entero en Python?", 
             ("3.14", "'42'", "10", "True"), 2),
@@ -23,31 +61,9 @@ preguntas=[("¿Qué función se usa para obtener la longitud de una cadena en Py
             ("// Esto es un comentario", "/* Esto es un comentario */", "-- Esto es un comentario", "# Esto es un comentario",), 3),
             ("¿Cuál es el operador de comparación para verificar si dos valores son iguales?", 
             ("=", "==", "!=", "==="), 1),]
+    score=0.0
+    preguntas_seleccionadas=random.sample(preguntas,3)
+    print("Su puntaje es: "+str(bucle(preguntas_seleccionadas,score)))
 
-score=0.0
-preguntas_seleccionadas=random.sample(preguntas,3)
-# El usuario deberá contestar 3 preguntas
-pregunta ,opciones,respuesta=random.choice(preguntas_seleccionadas)
-# Se muestra la pregunta y las respuestas posibles
-for pregunta, opciones, respuesta in preguntas_seleccionadas:    
-    print(pregunta)
-    for i, answer in enumerate(opciones):
-        print(f"{i + 1}. {answer}")
-    # El usuario tiene 2 intentos para responder correctamente
-    for intento in range(2):
-        entrada=Validar()
-    # Se verifica si la respuesta es correcta
-        if entrada == respuesta:
-            print("¡Correcto!")
-            score += 1
-            break
-        else:
-            score-=0.5
-    else:
-    # Si el usuario no responde correctamente después de 2 intentos,
-    # se muestra la respuesta correcta
-        print("Incorrecto. La respuesta correcta es:")
-        print(opciones[respuesta])
-    # Se imprime un blanco al final de la pregunta
-    print()
-print("Su puntaje es: "+str(score))
+
+principal()
