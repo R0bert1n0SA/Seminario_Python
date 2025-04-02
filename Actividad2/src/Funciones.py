@@ -221,11 +221,9 @@ def imprimir(ronda):
     Imprime el ranking de la ronda.
     :param ronda: Lista de diccionarios con las estadísticas de la ronda.
     """
-    print(
-        f"| {'Jugador':<10}| {'Kills':<6}| {'Asistencias':<11}| "
-        f"{'Muertes':<6}| {'MVP':<6}| {'Puntos':<6}|"
-        )
+    print("| Jugador   | Kills | Asistencias | Muertes | MVP  | Puntos |")
     print("-" * 59)
+    
     for fila in ronda:
         print(
             f"| {fila['Nombre']:<10}| {fila['Kills']:<6}| {fila['Assists']:<11}| "
@@ -236,28 +234,24 @@ def imprimir(ronda):
 
 def ordenar(ronda):
     """
-    Ordena los jugadores de la ronda según sus puntos de forma descendente.
+    Ordena los jugadores de la ronda según sus puntos en orden descendente.
     :param ronda: Lista de diccionarios con las estadísticas de la ronda.
+    :return: Lista ordenada de jugadores.
     """
-    n = len(ronda)
-    for j in range(n - 1):
-        for k in range(n - j - 1):
-            if ronda[k]['Puntos'] < ronda[k + 1]['Puntos']:
-                ronda[k], ronda[k + 1] = ronda[k + 1], ronda[k] 
+    return sorted(ronda, key=lambda jugador: jugador['Puntos'], reverse=True)
 
 
-
-
-def actualizar_estadisticas(ronda,stats_ronda,total,mvp_player):
+def actualizar_estadisticas(ronda, stats_ronda, total, mvp_player):
     """
-    Actualiza las estadísticas de los jugadores y agrega sus datos a la lista de la ronda.
-
-    :param ronda: Lista que contiene las estadísticas de la ronda.
+    Actualiza las estadísticas de los jugadores y las agrega a la lista de la ronda.
+    
+    :param ronda: Lista con las estadísticas de la ronda.
     :param stats_ronda: Diccionario de estadísticas de los jugadores en la ronda actual.
     :param total: Diccionario con las estadísticas acumuladas de todos los jugadores.
     :param mvp_player: Jugador que fue el MVP de la ronda.
     """
     for player, stats in stats_ronda.items():
+        # Actualizar las estadísticas acumuladas
         total[player]['kills'] += stats['kills']
         total[player]['assists'] += stats['assists']
         total[player]['deaths'] += stats['deaths']
@@ -267,7 +261,7 @@ def actualizar_estadisticas(ronda,stats_ronda,total,mvp_player):
         if player == mvp_player:
             total[player]['mvp_count'] += 1  
 
-        # Agregar a la lista de la ronda
+        # Agregar los datos a la lista de la ronda actual
         ronda.append({
             'Nombre': player,
             'Kills': total[player]['kills'],
@@ -278,9 +272,7 @@ def actualizar_estadisticas(ronda,stats_ronda,total,mvp_player):
         })
 
 
-
-
-def determinar_mvp(stats_ronda,round_data,mvp_player ):
+def determinar_mvp(stats_ronda, round_data, mvp_player):
     """
     Determina el jugador con más puntos (MVP) de la ronda.
 
@@ -289,51 +281,61 @@ def determinar_mvp(stats_ronda,round_data,mvp_player ):
     :param mvp_player: Jugador MVP actual.
     :return: El jugador con más puntos.
     """
-    max_puntos = -1
+    max_puntos = -1  # Inicializar con un valor bajo
 
     for player, stats in round_data.items():
-        puntos = (stats['kills'] * 3) + stats['assists']
-        if stats['deaths']:
-            muerte = 1
-        else:
-            muerte = 0
-        if stats['deaths']:
-            puntos -= 1
-        # Guardar las estadísticas temporales para evitar recalcular
+        # Calcular los puntos del jugador
+        puntos = (stats['kills'] * 3) + stats['assists'] - (1 if stats['deaths'] else 0)
+        
+        # Guardar las estadísticas en stats_ronda para evitar recalcular
         stats_ronda[player] = {
             'kills': stats['kills'],
             'assists': stats['assists'],
-            'deaths': muerte,
+            'deaths': 1 if stats['deaths'] else 0,
             'puntos': puntos
         }
+        
         # Determinar el MVP
         if puntos > max_puntos:
             max_puntos = puntos
             mvp_player = player
+    
     return mvp_player
 
 
 def procesar_rondas(rounds, total):
     """
     Procesa todas las rondas, determina el MVP y actualiza las estadísticas.
-
+    
     :param rounds: Lista de rondas con las estadísticas de los jugadores.
     :param total: Diccionario con las estadísticas acumuladas de los jugadores.
     """
-    for ronda_num, round_data in enumerate(rounds, start=1):
-        # Determinar si es la ronda final o numerada
-        if ronda_num == 5 :
-            print("Ranking ronda Final") 
-        else :
+    ronda_num = 1  # Inicializar el contador de rondas
+    
+    for round_data in rounds:
+        # Mostrar el título de la ronda
+        if ronda_num == 5:
+            print("Ranking ronda Final")
+        else:
             print(f"Ranking ronda {ronda_num}")
-        # Lista para almacenar las estadísticas de la ronda
+        
+        # Inicializar las estructuras de datos para la ronda
         ronda = []
         stats_ronda = {}
         mvp_player = None
-        mvp_player=determinar_mvp(stats_ronda,round_data,mvp_player )
-        actualizar_estadisticas(ronda,stats_ronda,total,mvp_player )
-        ordenar(ronda)
-        imprimir(ronda)
+        
+        # Determinar el MVP de la ronda
+        mvp_player = determinar_mvp(stats_ronda, round_data, mvp_player)
+        
+        # Actualizar estadísticas y ordenarlas
+        actualizar_estadisticas(ronda, stats_ronda, total, mvp_player)
+        ronda_ordenada = ordenar(ronda)
+        
+        # Imprimir resultados de la ronda
+        imprimir(ronda_ordenada)
+        
+        # Incrementar el número de ronda
+        ronda_num += 1
 
 
 
