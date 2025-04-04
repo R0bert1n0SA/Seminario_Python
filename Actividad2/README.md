@@ -4,14 +4,11 @@ Este proyecto es una solución a un conjunto de ejercicios en el marco del Semin
 
 ## Requisitos
 
-Para poder ejecutar el proyecto, necesitas tener Python 3.x y las siguientes dependencias instaladas:
+Para poder ejecutar el proyecto, necesitas tener Python 3.12.9 y las siguientes dependencias instaladas:
 
 - **Jupyter Notebook**: Para ejecutar los notebooks de Python y ver los resultados.
 - Si instalas las dependencias desde el archivo `requirements.txt`, podrás asegurarte de que todas las bibliotecas necesarias estén instaladas.
 
-## Requisitos
-
-El entorno para ejecutar este proyecto ya está configurado. Sin embargo, si necesitas instalar las dependencias de manera manual, puedes hacerlo mediante el archivo `requirements.txt`.
 
 ### Instalación de Dependencias
 
